@@ -1,0 +1,162 @@
+#include<iostream>
+#include<string>
+#include<chrono>
+#include<thread>
+#include<atomic>
+#include<cmath>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include <ctime>
+using namespace std;
+
+int arr[10];
+int size_arr = sizeof(arr)/sizeof(arr[0]);
+int min_index, filled = 0, num, option, temp;
+
+void show_array();
+void array_clean();
+void merge_arr(int left, int mid, int right);
+void merge_sort(int left, int right);
+
+int main(){
+
+cout<<"Welcome to Merge Sort\n";
+
+while(true){
+
+cout<<"1. Sort\n";
+cout<<"2. Quit\n";
+cout<<"Enter 1 or 2: ";
+cin>>option;
+cout<<endl;
+
+if(cin.fail()){
+    cin.clear();
+    cin.ignore(1000, '\n');
+    cout<<"Data types invalid\n";
+    continue;
+}
+
+if(option == 2){
+    cout<<"Thank You\n";
+    return 0;
+}
+
+else if(option == 1){
+
+filled = 0;
+for(int x = 0; x<size_arr; ){
+    cout<<"Enter number to sort: ";
+    cin>>num;
+    
+    if(num == 0){
+    break;
+    }
+    
+    while(cin.fail()||num<0){
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout<<"Invalid data types\n";
+        cout<<"Enter number to sort: ";
+        cin>>num;
+        continue;
+        }
+    
+    arr[x] = num;
+    filled++;
+    x++;
+    
+    if(filled == size_arr){
+        cout<<"Array is fulled\n";
+    }
+}
+
+cout<<"Number: ";
+merge_sort(0, filled-1);
+show_array();
+cout<<endl;
+
+    cout<<"New Number(sorted): ";
+    show_array();
+    array_clean();
+}
+
+
+else{
+    cout<<"Invalid\n";
+}
+}
+return 0;
+}
+
+void show_array(){
+    for(int i = 0; i < filled; i++){
+        cout<<arr[i];
+        if(i != filled - 1){
+            cout<<", ";
+        }
+    }
+    cout<<endl;
+}
+
+void array_clean(){
+    for(int i = 0; i<size_arr; i++){
+        arr[i] = 0;
+    }
+    filled = 0;
+}
+
+void merge_sort(int left, int right){
+
+    if(left<right){
+        int mid = (left+right)/2;
+        merge_sort(left, mid);
+        merge_sort(mid+1, right);
+        merge_arr(left, mid, right);
+    }
+}
+
+void merge_arr(int left, int mid, int right){
+    
+    int n1, n2;
+    
+    n1 = mid - left +1;
+    n2 = right - mid;
+           
+    int L[10], R[10];
+ 
+    for(int i = 0; i<n1; i++){
+        L[i] = arr[left + i];
+    }
+    for(int j = 0; j<n2; j++){
+        R[j] = arr[mid+1 + j];
+    } 
+    
+    int i = 0, j = 0, k = left;
+    
+    while(i<n1 && j<n2){
+    if(L[i]<=R[j]){
+        arr[k] = L[i];
+        i++;
+    }
+    else{
+        arr[k] = R[j];
+        j++;
+    }
+    k++;
+    }
+    
+    while(i<n1){
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    
+    while(j<n2){
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+     
+}  
